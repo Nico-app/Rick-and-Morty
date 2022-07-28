@@ -36,6 +36,7 @@ export function PersonajeDetail() {
             <p>Nombre: {personaje?.name}</p>
             <p>Genero: {personaje?.gender}</p>
             <p>Especie: {personaje?.species}</p>
+            <p>Status: {personaje?.status}</p>
         </div>
     </div>);
 }
