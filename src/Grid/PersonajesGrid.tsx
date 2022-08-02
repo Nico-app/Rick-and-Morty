@@ -1,40 +1,71 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import PersonajesCard from "../Card/PersonajesCard";
 import { PaginationInfo } from "../LandingPage";
 import Pagination from "../Pagination";
 import Spinner from "../Spinner/Spinner";
-import { fetchCharacters } from "../utils/http";
-import { Personaje } from "../utils/Types";
+import { fetchCharacters, fetchNewPage } from "../utils/http";
+import { Personaje, Search } from "../utils/Types";
 import "./PersonajeGrid.css";
 
-type PersonajesGridProps = {
-  personajes: Personaje[];
-  setPersonajes: (newPersonajes: Personaje[]) => void;
-  setPaginationInfo: (vevo: PaginationInfo) => void;
-  paginationInfo?: PaginationInfo;
-};
-
-const PersonajesGrid = (props: PersonajesGridProps) => {
+const PersonajesGrid = ({ search }: { search?: Search }) => {
+  const [personajes, setPersonajes] = useState<Personaje[]>([]);
+  const [info, setInfo] = useState<PaginationInfo>();
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const getPersonajes = async (url?: string) => {
-    const data = await fetchCharacters(url);
-    props.setPersonajes(data.results);
-    props.setPaginationInfo(data.info);
+  const getNexPage = async (url: string) => {
+    const data = await fetchNewPage(url);
+    setPersonajes(data.results);
+    setInfo(data.info);
   };
 
   useEffect(() => {
-    setIsLoading(true);
-    getPersonajes();
-    setIsLoading(false);
+    (async () => {
+      try {
+        setIsLoading(true);
+        const data = await fetchCharacters();
+        setPersonajes(data.results);
+        setInfo(data.info);
+      } catch (error) {
+        console.log(error);
+      }
+      setIsLoading(false);
+    })();
   }, []);
 
   useEffect(() => {
+    if (!search) {
+      return;
+    }
+
+    const filterPath = new URLSearchParams();
+    if (search.name) {
+      filterPath.set("name", search.name);
+    }
+    if (search.gender) {
+      filterPath.set("gender", search.gender);
+    }
+
+    if (search.status) {
+      filterPath.set("status", search.status);
+    }
+    console.log("filterPath", filterPath);
+    console.log("filterPath string", filterPath.toString());
+
+    try {
+      fetchCharacters(filterPath.toString()).then((data) => {
+        setPersonajes(data.results);
+        setInfo(data.info);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, [search]);
+
+  useEffect(() => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    if (props.paginationInfo?.next) {
-      var url = new URL(props.paginationInfo?.next);
+    if (info?.next) {
+      var url = new URL(info?.next);
       var params = new URLSearchParams(url.search);
       const nextPage = params.get("page");
 
@@ -43,7 +74,7 @@ const PersonajesGrid = (props: PersonajesGridProps) => {
         setCurrentPage(numericPage);
       }
     }
-  }, [props.paginationInfo?.next]);
+  }, [info?.next]);
 
   if (isLoading) {
     return <Spinner />;
@@ -51,17 +82,11 @@ const PersonajesGrid = (props: PersonajesGridProps) => {
   return (
     <>
       <ul className="personajeGrid">
-        {props.personajes.map(({ id, name, image }) => (
+        {personajes.map(({ id, name, image }) => (
           <PersonajesCard name={name} image={image} id={id} key={id + name} />
         ))}
       </ul>
-      {props.paginationInfo && (
-        <Pagination
-          info={props.paginationInfo}
-          onChange={getPersonajes}
-          currentPage={currentPage}
-        />
-      )}
+      {info && <Pagination info={info} onChange={getNexPage} currentPage={currentPage} />}
     </>
   );
 };

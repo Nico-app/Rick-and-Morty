@@ -1,0 +1,44 @@
+.select {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  cursor: pointer;
+  height: 30px;
+  min-width: 80px;
+  background-color: #42912c;
+  position: relative;
+  color: black;
+  margin: 0 20px;
+  border: 1px solid;
+}
+
+.control {
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.options {
+  position: absolute;
+  top: 34px;
+  width: 100%;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  background-color: inherit;
+}
+
+.option {
+  height: 20px;
+  border-top: 1px solid black;
+}
+
+.option--selected {
+  background-color: aqua;
+}
+
+.option:hover {
+  color: #49fe19;
+}
