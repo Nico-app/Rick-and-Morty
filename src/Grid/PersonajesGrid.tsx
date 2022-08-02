@@ -42,6 +42,13 @@ const PersonajesGrid = ({ search }: { search?: Search }) => {
     if (search.name) {
       filterPath.set("name", search.name);
     }
+    if (search.gender) {
+      filterPath.set("gender", search.gender);
+    }
+
+    if (search.status) {
+      filterPath.set("status", search.status);
+    }
     console.log("filterPath", filterPath);
     console.log("filterPath string", filterPath.toString());
 
@@ -54,31 +61,6 @@ const PersonajesGrid = ({ search }: { search?: Search }) => {
       console.log(error);
     }
   }, [search]);
-
-  // useEffect(() => {
-  //   if (!search) {
-  //     return;
-  //   }
-  //   const path = new URLSearchParams();
-  //   if (search.text) {
-  //     path.set("name", search.text);
-  //   }
-  //   if (search.status) {
-  //     path.set("status", search.status);
-  //   }
-  //   if (search.gender) {
-  //     path.set("gender", search.gender);
-  //   }
-
-  //   try {
-  //     getCharacters(API + "/character?" + path.toString()).then((data) => {
-  //       setCharacters(data.results);
-  //       setInfo(data.info);
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }, [search]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/rules-of-hooks

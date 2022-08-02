@@ -1,7 +1,6 @@
-import { useState } from "react";
 import PersonajesGrid from "./Grid/PersonajesGrid";
 import Navbar from "./Navbar/navbar";
-import { Personaje, Search } from "./utils/Types";
+import { Search } from "./utils/Types";
 
 export type PaginationInfo = {
   next: string;
