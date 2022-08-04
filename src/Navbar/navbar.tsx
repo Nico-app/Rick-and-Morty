@@ -31,14 +31,14 @@ const Navbar = ({ setFilters }: NavbarProps) => {
       <Select
         use="gender"
         currentValue={localSearch?.gender}
-        options={["female", "male", "genderless", "unknown"]}
+        options={["Female", "Male", "Genderless", "Unknown"]}
         onSelect={(filter, value) => setLocalSearch({ ...localSearch, [filter]: value })}
       />
 
       <Select
         use="status"
         currentValue={localSearch?.status}
-        options={["alive", "dead", "unknown"]}
+        options={["Alive", "Dead", "Unknown"]}
         onSelect={(filter, value) => setLocalSearch({ ...localSearch, [filter]: value })}
       />
 
