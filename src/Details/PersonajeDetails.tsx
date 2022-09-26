@@ -14,24 +14,24 @@ export function PersonajeDetail() {
         const personajeResult = await getCharacter(id!)
         setPersonaje(personajeResult)
     }
-   
+
     useEffect(() => {
         setIsLoading(true)
         urlpersonaje()
         setIsLoading(false)
-    }, [])
+    }, [urlpersonaje])
 
-    if(isLoading) {
-        return <Spinner/>
+    if (isLoading) {
+        return <Spinner />
     }
 
     return (<div className="detailsConteiner">
-         <img 
-         width={250}
-         height={250}
-         className="personajeImage" 
-         src={personaje?.image} 
-         alt={personaje?.name}/>
+        <img
+            width={250}
+            height={250}
+            className="personajeImage"
+            src={personaje?.image}
+            alt={personaje?.name} />
         <div className="col">
             <p>Nombre: {personaje?.name}</p>
             <p>Genero: {personaje?.gender}</p>
