@@ -19,7 +19,8 @@ export function PersonajeDetail() {
         setIsLoading(true)
         urlpersonaje()
         setIsLoading(false)
-    }, [urlpersonaje])
+        // eslint-disable-next-line
+    }, [])
 
     if (isLoading) {
         return <Spinner />
